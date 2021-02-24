@@ -1,0 +1,135 @@
+programa adicional4
+procesos
+  proceso juntarFlores(ES f:numero)
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      f:=f+1
+  fin
+  proceso juntarPapeles(ES p:numero)
+  comenzar
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+      p:=p+1
+  fin
+areas
+  cuadrado1 : AreaPC(3,3,13,13)
+  cuadrado2 : AreaPC(16,3,26,13)
+  areaInicial: AreaPC(14,1,15,20)
+  
+robots
+  robot tipoPapelero
+  variables
+    ca:numero
+    av:numero
+    id:numero
+    p:numero
+    c:numero
+    v:numero
+  comenzar
+    RecibirMensaje(av,jefe)
+    RecibirMensaje(ca,jefe)
+    RecibirMensaje(id,jefe)
+    BloquearEsquina(av,ca)
+    Pos(av,ca)
+    repetir 2
+      derecha
+    c:=ca
+    v:=av
+    repetir 4
+      repetir 10
+        c:=c+1
+        v:=v+1
+        BloquearEsquina(v,c)
+        mover
+        LiberarEsquina(av,ca)
+        juntarPapeles(p)
+      derecha
+    EnviarMensaje(id,jefe)
+    EnviarMensaje(p,jefe)
+  fin
+  robot tipoFlorero
+  variables
+    ca:numero
+    av:numero
+    id:numero
+    f:numero
+    c:numero
+    v:numero
+  comenzar
+    RecibirMensaje(av,jefe)
+    RecibirMensaje(ca,jefe)
+    RecibirMensaje(id,jefe)
+    BloquearEsquina(av,ca)
+    Pos(av,ca)
+    c:=ca
+    v:=av
+    repetir 4
+      repetir 10
+        c:=c+1
+        v:=v+1
+        BloquearEsquina(v,c)
+        mover
+        LiberarEsquina(av,ca)
+        juntarFlores(f)
+      derecha
+    EnviarMensaje(id,jefe)
+    EnviarMensaje(f,jefe)
+  fin
+  robot tipoJefe
+  variables
+    f:numero
+    p:numero
+  comenzar
+    {envio cordenadas inciales}
+    EnviarMensaje(3,florero1)
+    EnviarMensaje(3,florero1)
+    EnviarMensaje(1,florero1)
+    
+    EnviarMensaje(16,florero2)
+    EnviarMensaje(3,florero2)
+    EnviarMensaje(1,florero2)
+    
+    EnviarMensaje(13,papelero1)
+    EnviarMensaje(13,papelero1)
+    EnviarMensaje(2,papelero1)
+    
+    EnviarMensaje(26,papelero2)
+    EnviarMensaje(13,papelero2)
+    EnviarMensaje(2,papelero2)
+
+
+ 
+  fin
+
+variables
+  papelero1:tipoPapelero
+  papelero2:tipoPapelero
+
+  florero1:tipoFlorero
+  florero2:tipoFlorero
+  jefe:tipoJefe
+comenzar
+  AsignarArea(papelero1,cuadrado1)
+  AsignarArea(papelero1,areaInicial)
+  AsignarArea(papelero2,cuadrado2)
+  AsignarArea(papelero2,areaInicial)
+ 
+  AsignarArea(florero1,cuadrado1)
+  AsignarArea(florero1,areaInicial)
+  AsignarArea(florero2,cuadrado2)
+  AsignarArea(florero2,areaInicial)
+  
+  AsignarArea(jefe,areaInicial)
+  Iniciar(jefe,14,16)
+  
+  Iniciar(florero1,14,15)
+  Iniciar(florero2,14,14) 
+  
+  Iniciar(papelero1,14,17)
+  Iniciar(papelero2,14,18)
+
+fin
+
+
+

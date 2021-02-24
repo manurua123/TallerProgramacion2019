@@ -1,0 +1,112 @@
+programa parcial
+procesos
+  proceso juntarPapel(ES p:numero)
+  comenzar
+    mientras (HayPapelEnLaEsquina)
+      tomarPapel
+      p:= p + 1
+  fin
+  proceso dejarPapeles(E p:numero)
+  comenzar
+    repetir p
+      depositarPapel
+  fin
+areas
+  areaJefe: AreaP(22,1,25,1)
+  area0 : AreaC (1,1,21,41)
+  
+
+robots
+  robot jugador
+  variables
+    av:numero
+    ca:numero
+    id:numero
+    p:numero
+    pasos:numero
+    cantPasos: numero
+    maxPasos:numero
+  comenzar
+    cantPasos:=0
+    p:=0
+    RecibirMensaje(av,jefe)  
+    RecibirMensaje(ca,jefe)
+    RecibirMensaje(id,jefe)
+    maxPasos:= 40 - ca
+    repetir 5
+      Pos(av,ca)
+      Random(pasos,1,maxPasos)
+      cantPasos:= cantPasos + pasos
+      repetir pasos
+        juntarPapel(p)
+        mover
+    BloquearEsquina (1,30)
+    Pos(1,30)
+    dejarPapeles(p)
+    Pos(av,ca)
+    LiberarEsquina (1,30)
+    EnviarMensaje(id,jefe)
+    EnviarMensaje(cantPasos,jefe)
+  fin
+  robot jefe
+  variables
+    av:numero
+    ca:numero
+    maximo:numero
+    robotMaximo:numero
+    cant:numero
+    id:numero
+  comenzar
+   {envio mensajes de configuracion al roboto3}
+    Random(av,1,7)
+    Random(ca,1,40)
+    EnviarMensaje(av,robot1)
+    EnviarMensaje(ca,robot1)
+    EnviarMensaje(1,robot1)
+    {envio mensajes de configuracion al roboto2}
+    Random(av,8,14)
+    Random(ca,1,40)
+    EnviarMensaje(av,robot2)
+    EnviarMensaje(ca,robot2)
+    EnviarMensaje(2,robot2)
+    {envio mensajes de configuracion al roboto3}
+    Random(av,15,21)
+    Random(ca,1,40)
+    EnviarMensaje(av,robot3)
+    EnviarMensaje(ca,robot3)
+    EnviarMensaje(3,robot3)
+    
+    robotMaximo := 0
+    maximo := 0
+    repetir 3
+      RecibirMensaje(id,*)
+      si(id = 1)
+        RecibirMensaje(cant,robot1)
+      sino
+        si(id = 2)
+          RecibirMensaje(cant,robot2)
+        sino
+          si(id = 3)
+            RecibirMensaje(cant,robot3)
+      si (cant > maximo)
+        maximo := cant
+        robotMaximo := id
+    Informar('ganador_Robot', robotMaximo)
+  fin
+variables
+  jefe: jefe  
+  robot1:jugador
+  robot2:jugador
+  robot3:jugador
+comenzar
+  AsignarArea(jefe,areaJefe)
+  AsignarArea(robot1,area0)
+  AsignarArea(robot2,area0)
+  AsignarArea(robot3,area0)
+  Iniciar(jefe,25,1)
+  Iniciar(robot1,1,1)
+  Iniciar(robot2,8,1)
+  Iniciar(robot3,15,1)
+fin
+
+ 

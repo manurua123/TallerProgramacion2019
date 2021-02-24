@@ -1,0 +1,80 @@
+programa Ejercicio-1-ha
+procesos
+  proceso juntar (ES flor:numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina)
+      tomarFlor
+      flor:= flor + 1
+  fin
+areas
+  area0 : AreaP(1,1,1,1)
+  area1 : AreaP(2,2,7,7)
+  area2 : AreaP(8,2,13,7)
+  area3 : AreaP(14,2,19,7)
+robots
+  robot tipoJugador
+  variables
+    va:numero
+    ca:numero
+    vaMn:numero
+    vaMx:numero
+    caMn:numero
+    caMx:numero
+    f:numero
+  comenzar
+    f:=0
+    RecibirMensaje(vaMn,jefe)
+    RecibirMensaje(vaMx,jefe)
+    RecibirMensaje(caMn,jefe)
+    RecibirMensaje(caMx,jefe)
+    Pos(vaMn,caMn)
+    repetir 3
+      Random(va,vaMn,vaMx)
+      Random(ca,caMn,caMx)
+      Pos(va,ca)
+      juntar(f)
+    EnviarMensaje(f,jefe)
+  fin 
+  robot tipoJefe
+  variables
+    aux:numero
+    f:numero
+  comenzar
+    aux:=0
+    {envio las esquinas de cada area}
+    EnviarMensaje(2,robot1)
+    EnviarMensaje(7,robot1)
+    EnviarMensaje(2,robot1)
+    EnviarMensaje(7,robot1)
+     
+    EnviarMensaje(8,robot2)
+    EnviarMensaje(13,robot2)
+    EnviarMensaje(2,robot2)
+    EnviarMensaje(7,robot2)
+     
+    EnviarMensaje(14,robot3)
+    EnviarMensaje(19,robot3)
+    EnviarMensaje(2,robot3)
+    EnviarMensaje(7,robot3)
+     
+    repetir 3
+      RecibirMensaje(f,*)
+      aux:= aux + f   
+    Informar('cant_Flores:' , aux)
+  fin
+
+variables 
+  jefe: tipoJefe
+  robot1: tipoJugador
+  robot2: tipoJugador
+  robot3: tipoJugador
+comenzar
+  AsignarArea(jefe,area0)
+  AsignarArea(robot1,area1)
+  AsignarArea(robot2,area2)
+  AsignarArea(robot3,area3)
+  Iniciar(jefe,1,1)
+  Iniciar(robot1,2,2)
+  Iniciar(robot2,8,2)
+  Iniciar(robot3, 14,2)
+fin

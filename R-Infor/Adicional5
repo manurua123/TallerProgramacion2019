@@ -1,0 +1,91 @@
+programa adicional5
+areas
+  tablero: AreaPC(5,5,20,20)
+  areaInicial: AreaPC(9,1,15,1)
+  areaJefe : AreaP(21,21,22,22)
+robots
+  robot tipoJugador
+  variables
+    av:numero
+    ca:numero
+    avI:numero
+    caI:numero
+    cant:numero
+    id:numero
+    f:numero
+  comenzar
+    cant:= 0
+    f:=0
+    RecibirMensaje(id,jefe)
+    caI:=PosCa
+    avI:=PosAv
+    repetir 4
+      Random(av,5,20)
+      Random(ca,5,20)
+      BloquearEsquina(av,ca)
+      Pos(av,ca)
+      si ~ (HayFlorEnLaEsquina | HayPapelEnLaEsquina)
+        cant:= cant +1
+        si HayFlorEnLaBolsa
+          depositarFlor
+          f:=f+1
+      Pos(avI,caI)
+      LiberarEsquina(av,ca)
+    EnviarMensaje(id,jefe)
+    EnviarMensaje(cant,jefe)
+    EnviarMensaje(f,jefe)
+  fin
+  robot tipoJefe
+  variables
+    robotMinimo:numero
+    minimo:numero
+    cant:numero
+    f:numero
+    fTotal:numero
+    id:numero
+  comenzar
+    EnviarMensaje(1,robot1)
+    EnviarMensaje(2,robot2)
+    EnviarMensaje(3,robot3)
+    fTotal:=0
+    minimo:=999
+    robotMinimo:= 999
+    repetir 3
+      RecibirMensaje(id,*)
+      si(id = 1)
+        RecibirMensaje(cant, robot1)
+        RecibirMensaje(f,robot1)
+      sino
+        si(id=2)
+          RecibirMensaje(cant,robot2)
+          RecibirMensaje(f,robot2)
+        sino
+          si(id= 3)
+            RecibirMensaje(cant,robot3)
+            RecibirMensaje(f,robot3)
+      si(cant < minimo)
+        minimo:=cant
+        robotMinimo:= id
+      fTotal:= fTotal + f
+    Informar('RobotMinimo', robotMinimo)
+    Informar('FloresDejadas', fTotal)
+  fin
+variables
+  robot1: tipoJugador
+  robot2:tipoJugador
+  robot3:tipoJugador
+  jefe: tipoJefe
+comenzar
+  AsignarArea(robot1,areaInicial)
+  AsignarArea(robot2,areaInicial)
+  AsignarArea(robot3,areaInicial)
+  AsignarArea(robot1,tablero)
+  AsignarArea(robot2,tablero)
+  AsignarArea(robot3,tablero)
+  AsignarArea(jefe,areaJefe)
+  Iniciar(robot1,10,1)
+  Iniciar(robot2,12,1)
+  Iniciar(robot3,14,1)
+  Iniciar(jefe,21,21)
+fin
+  
