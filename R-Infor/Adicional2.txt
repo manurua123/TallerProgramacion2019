@@ -1,0 +1,154 @@
+programa adicional2
+procesos
+  proceso juntar(ES f:numero; ES p:numero)
+  comenzar
+    mientras (HayFlorEnLaEsquina | HayPapelEnLaEsquina)
+      si HayFlorEnLaEsquina
+        tomarFlor
+        f:=f+1
+      si HayPapelEnLaEsquina
+        tomarPapel
+        p:=p +1
+  fin
+areas
+  ciudad: AreaC(1,1,100,100)
+robots
+  robot tipo1
+  variables
+    f:numero
+    p:numero
+    av:numero
+    ca:numero
+    id:numero
+  comenzar
+    RecibirMensaje(av,jefe)
+    RecibirMensaje(ca,jefe)
+    RecibirMensaje(id,jefe)
+    f:=0
+    p:=0
+    Pos(av,ca)
+    juntar(f,p)
+    repetir 2
+      repetir 2
+        repetir 2
+          av:=PosAv+1
+          ca:=PosCa+1
+          BloquearEsquina(av,ca)
+          mover
+          juntar(f,p)
+          mover
+          juntar(f,p)
+          LiberarEsquina(av,ca)
+      derecha
+      repetir 2
+        mover 
+        juntar(f,p)
+      derecha
+    EnviarMensaje(id,jefe)
+    EnviarMensaje(f,jefe)
+    EnviarMensaje(p,jefe)
+  fin
+  robot tipo2
+  variables
+    f:numero
+    p:numero
+    av:numero
+    ca:numero
+    id:numero
+  comenzar
+    RecibirMensaje(av,jefe)
+    RecibirMensaje(ca,jefe)
+    RecibirMensaje(id,jefe)
+    f:=0
+    p:=0
+    Pos(av,ca)
+    juntar(f,p)
+    derecha
+    repetir 2
+      repetir 2
+        repetir 2
+          av:=PosAv+1
+          ca:=PosCa+1
+          BloquearEsquina(av,ca)
+          mover
+          juntar(f,p)
+          mover
+          juntar(f,p)
+          LiberarEsquina(av,ca)
+      derecha
+      repetir 2
+        mover 
+        juntar(f,p)
+      derecha
+    EnviarMensaje(id, jefe) 
+    EnviarMensaje(f,jefe)
+    EnviarMensaje(p,jefe)
+  fin
+  robot jefe
+  variables
+    f:numero
+    p:numero
+    flor:numero
+    papel:numero
+    id:numero
+  comenzar
+    flor:=0
+    papel:=0
+    
+    EnviarMensaje(2,robot1)
+    EnviarMensaje(1,robot1)
+    EnviarMensaje(1,robot1)
+    
+    EnviarMensaje(6,robot2)
+    EnviarMensaje(1,robot2)    
+    EnviarMensaje(2,robot2)
+    
+    EnviarMensaje(1,robot3)
+    EnviarMensaje(4,robot3)
+    EnviarMensaje(3,robot3)
+    
+    EnviarMensaje(1,robot4)
+    EnviarMensaje(8,robot4)
+    EnviarMensaje(4,robot4)
+    
+    repetir 4
+      RecibirMensaje(id,*)
+      si (id = 1)
+        RecibirMensaje(f,robot1)
+        RecibirMensaje(p,robot1)
+      sino
+        si(id = 2)
+          RecibirMensaje(f,robot2)
+          RecibirMensaje(p,robot2)
+        sino
+          si (id = 3)
+            RecibirMensaje(f,robot3)
+            RecibirMensaje(p,robot3)
+          sino
+            si (id = 4)
+              RecibirMensaje(f,robot4)
+              RecibirMensaje(p,robot4)
+      flor := flor + f
+      papel := papel + p
+    Informar('FLORES', flor)
+    Informar('PAPELES', papel)
+  fin
+  
+variables
+  robot1 : tipo1
+  robot2 : tipo1
+  robot3 : tipo2
+  robot4 : tipo2
+  jefe : jefe
+comenzar
+  AsignarArea(robot1,ciudad)
+  AsignarArea(robot2,ciudad)
+  AsignarArea(robot3,ciudad)
+  AsignarArea(robot4,ciudad)
+  AsignarArea(jefe,ciudad)
+  Iniciar(robot1,20,1)
+  Iniciar(robot2,21,2)
+  Iniciar(robot3,20,4)
+  Iniciar(robot4,20,5)
+  Iniciar(jefe,20,15)
+fin

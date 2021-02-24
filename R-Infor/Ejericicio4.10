@@ -1,0 +1,79 @@
+programa ejercicio4
+procesos
+  proceso juntar(ES f:numero; ES p:numero ; ES ok:boolean)
+  comenzar
+    si HayFlorEnLaEsquina | HayPapelEnLaEsquina
+      si HayPapelEnLaEsquina
+        tomarPapel
+        p:=p+1
+      si HayFlorEnLaEsquina
+        tomarFlor
+        f:=f+1
+    si HayFlorEnLaEsquina | HayPapelEnLaEsquina
+      ok := V
+    sino 
+      ok:= F
+  fin
+areas
+  ciudad: AreaC(1,1,100,100)
+robots
+  robot jugador
+  variables
+    f:numero
+    p:numero
+    av:numero
+    ca:numero
+    ok:boolean
+    go:boolean
+  comenzar
+    f:=0
+    p:=0
+    av:=PosAv
+    ca:=PosCa
+    ok:=V
+    RecibirMensaje(go,jefe)
+    mientras go = V
+      BloquearEsquina(15,23)
+      Pos(15,23)
+      juntar(f,p,ok)
+      Pos(av,ca)
+      LiberarEsquina(15,23)
+      EnviarMensaje(ok,jefe)
+      RecibirMensaje(go,jefe)
+  fin
+  robot tipoJefe
+  variables
+    ok:boolean
+    id:numero
+  comenzar
+    ok:= V
+    mientras ok
+      Random(id,1,3)
+      si id = 1
+        EnviarMensaje(V,robot1)
+      sino
+        si id = 2
+          EnviarMensaje(V,robot2)
+        sino
+          si id = 3
+            EnviarMensaje(V,robot3)
+      RecibirMensaje(ok,*)
+    EnviarMensaje(F,robot1)
+    EnviarMensaje(F,robot2)
+    EnviarMensaje(F,robot3)
+  fin
+variables
+  robot1:jugador
+  robot2:jugador
+  robot3:jugador
+  jefe:tipoJefe
+comenzar
+  AsignarArea(robot1,ciudad)
+  AsignarArea(robot2,ciudad)
+  AsignarArea(robot3,ciudad)
+  AsignarArea(jefe,ciudad)
+  Iniciar(robot1,9,9)
+  Iniciar(robot2,11,9)
+  Iniciar(robot3,13,9)
+  Iniciar(jefe,1,1)
+fin
